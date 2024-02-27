@@ -20,5 +20,24 @@ CREATE TABLE IF NOT EXISTS public.quack_post
 
 TABLESPACE pg_default;
 
-ALTER TABLE IF EXISTS public.employee
+ALTER TABLE IF EXISTS public.quack_post
+    OWNER to postgres;
+
+-- Table: public._user
+
+-- DROP TABLE IF EXISTS public._user;
+
+CREATE TABLE IF NOT EXISTS public._user
+(
+    id uuid NOT NULL DEFAULT uuid_generate_v4(),
+    firstname character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    lastname character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    password character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT _user_pkey PRIMARY KEY (id)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public._user
     OWNER to postgres;
