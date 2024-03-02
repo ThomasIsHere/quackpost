@@ -8,7 +8,6 @@ import ahiru.quackpost.model.User;
 import ahiru.quackpost.repository.IUserRepository;
 import ahiru.quackpost.security.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
