@@ -3,6 +3,7 @@ package ahiru.quackpost.controller;
 import ahiru.quackpost.controller.auth.AuthenticationRequest;
 import ahiru.quackpost.controller.auth.AuthenticationResponse;
 import ahiru.quackpost.controller.auth.RegisterRequest;
+import ahiru.quackpost.service.AuthenticationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,18 +16,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AuthenticationController {
 
+    private final AuthenticationService authenticationService;
+
     @PostMapping("/register")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody RegisterRequest registerRequest
     ){
-        return null;
+        return ResponseEntity.ok(authenticationService.register(registerRequest));
     }
 
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> register(
             @RequestBody AuthenticationRequest authenticationRequest
     ){
-        return null;
+        return ResponseEntity.ok(authenticationService.authenticate(authenticationRequest));
     }
 
 }
