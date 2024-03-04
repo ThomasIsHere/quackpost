@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/quack_post")
@@ -22,7 +21,7 @@ public class QuackPostController {
     }
 
     @GetMapping("/{id}")
-    public Optional<QuackPost> findById(@PathVariable UUID id){
+    public Optional<QuackPost> findById(@PathVariable Integer id){
         return quackPostService.findById(id);
     }
 
@@ -40,7 +39,7 @@ public class QuackPostController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT) // 204
     @DeleteMapping("/{id}")
-    public void deleteById(@PathVariable UUID id){
+    public void deleteById(@PathVariable Integer id){
         quackPostService.deleteById(id);
     }
 

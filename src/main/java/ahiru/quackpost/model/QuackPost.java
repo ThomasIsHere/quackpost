@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.Date;
-import java.util.UUID;
 
 @Entity
 @Table(name="quack_post")
@@ -16,9 +15,11 @@ import java.util.UUID;
 public class QuackPost {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+    private Integer id;
     @CreationTimestamp
     private Date createdOn;
     @Column(name="content")
     private String content;
+    @Column(name="user_id")
+    private Integer user_id;
 }

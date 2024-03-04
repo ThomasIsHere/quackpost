@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class QuackPostService {
@@ -18,7 +17,7 @@ public class QuackPostService {
         return quackPostRepository.findAll();
     }
 
-    public Optional<QuackPost> findById(UUID id){
+    public Optional<QuackPost> findById(Integer id){
         return quackPostRepository.findById(id);
     }
 
@@ -26,7 +25,7 @@ public class QuackPostService {
         return quackPostRepository.save(quackPost);
     }
 
-    public void deleteById(UUID id){
+    public void deleteById(Integer id){
         quackPostRepository.deleteById(id);
     }
 }
