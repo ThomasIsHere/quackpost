@@ -1,5 +1,6 @@
 package ahiru.quackpost.security;
 
+import ahiru.quackpost.repository.ITokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+    private final ITokenRepository tokenRepository;
 
     @Override
     protected void doFilterInternal(
@@ -46,7 +48,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if(userEmail != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
 
-            if(jwtService.isTokenValid(jwt, userDetails)){
+            var isTokenValidInDb = tokenRepository.findByToken(jwt)
+                    .map(t -> !t.isExpired() && !t.isRevoked())
+                    .orElse(false);
+
+            if(jwtService.isTokenValid(jwt, userDetails) && isTokenValidInDb){
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails,
                         null, // no credentials
