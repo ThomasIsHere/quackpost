@@ -14,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class QuackPost {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @CreationTimestamp
     private Date createdOn;

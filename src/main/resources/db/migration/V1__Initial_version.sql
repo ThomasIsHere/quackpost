@@ -5,16 +5,44 @@
 CREATE TABLE IF NOT EXISTS public._user
 (
     id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-    firstname character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    lastname character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    firstname character varying(100) COLLATE pg_catalog."default",
+    lastname character varying(100) COLLATE pg_catalog."default",
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL UNIQUE,
+    pseudonym character varying(100) COLLATE pg_catalog."default" NOT NULL UNIQUE,
     password character varying(100) COLLATE pg_catalog."default" NOT NULL,
-    CONSTRAINT _user_pkey PRIMARY KEY (id)
+    role character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT _user_pkey PRIMARY KEY (id),
+    CONSTRAINT _user_role_check CHECK (role::text = ANY (ARRAY['USER'::character varying, 'ADMIN'::character varying]::text[]))
 )
 
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public._user
+    OWNER to postgres;
+
+-- Table: public.token
+
+-- DROP TABLE IF EXISTS public.token;
+
+CREATE TABLE IF NOT EXISTS public.token
+(
+    id integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+    expired boolean NOT NULL,
+    revoked boolean NOT NULL,
+    token character varying(255) COLLATE pg_catalog."default",
+    token_type character varying(255) COLLATE pg_catalog."default",
+    user_id integer,
+    CONSTRAINT token_pkey PRIMARY KEY (id),
+    CONSTRAINT token_token_type_check CHECK (token_type::text = 'BEARER'::text),
+    CONSTRAINT fk_user_token FOREIGN KEY (user_id)
+                REFERENCES public._user (id) MATCH SIMPLE
+                ON UPDATE NO ACTION
+                ON DELETE NO ACTION
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE IF EXISTS public.token
     OWNER to postgres;
 
 -- Table: public.quack_post
@@ -37,29 +65,4 @@ CREATE TABLE IF NOT EXISTS public.quack_post
 TABLESPACE pg_default;
 
 ALTER TABLE IF EXISTS public.quack_post
-    OWNER to postgres;
-
--- Table: public.token
-
--- DROP TABLE IF EXISTS public.token;
-
-CREATE TABLE IF NOT EXISTS public.token
-(
-    id integer NOT NULL,
-    expired boolean NOT NULL,
-    revoked boolean NOT NULL,
-    token character varying(255) COLLATE pg_catalog."default",
-    token_type character varying(255) COLLATE pg_catalog."default",
-    user_id integer,
-    CONSTRAINT token_pkey PRIMARY KEY (id),
-    CONSTRAINT token_token_type_check CHECK (token_type::text = 'BEARER'::text),
-    CONSTRAINT fk_user_token FOREIGN KEY (user_id)
-                REFERENCES public._user (id) MATCH SIMPLE
-                ON UPDATE NO ACTION
-                ON DELETE NO ACTION
-)
-
-TABLESPACE pg_default;
-
-ALTER TABLE IF EXISTS public.token
     OWNER to postgres;

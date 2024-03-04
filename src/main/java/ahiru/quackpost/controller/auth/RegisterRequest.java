@@ -14,4 +14,5 @@ public class RegisterRequest { // Should be move in model?
     private String lastname;
     private String email;
     private String password;
+    private String pseudonym;
 }
